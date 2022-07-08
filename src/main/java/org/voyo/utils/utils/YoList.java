@@ -58,4 +58,9 @@ public class YoList {
         }
         return null;
     }
+
+    public boolean isEmpty(List<Object> list){
+        if(list==null)return true;
+        return list.size()<1;
+    }
 }
