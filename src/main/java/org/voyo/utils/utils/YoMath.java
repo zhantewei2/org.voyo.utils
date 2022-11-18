@@ -34,8 +34,8 @@ public class YoMath {
     return Double.valueOf(Math.floor(Math.random() * (double)(end - start))).intValue() + start;
   }
 
-  final static public String miniSource="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789*~";
-  final static public Long miniSourceLen=64L;
+  final static public String miniSource="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789";
+  final static public Long miniSourceLen=62L;
 
   public static String miniLong(Long source){
     Long y;

@@ -18,11 +18,9 @@ public class YoMap {
     return val!=null? Long.valueOf((String)val):null;
   }
 
-  public static void main(String[] args){
-    Set<Integer> s=new HashSet<>();
-    s.add(1);
-    s.add(2);
-    s.add(1);
-    System.out.println(s);
+  public static void main(String[] args) {
+    String a= null;
+    String b="x";
+    System.out.println(String.format("xxxx %s - %s ",b,a));
   }
 }

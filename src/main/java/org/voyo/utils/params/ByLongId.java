@@ -11,4 +11,9 @@ public class ByLongId {
   @NotNull
   @JsonSerialize(using = ToStringSerializer.class)
   private Long id;
+
+  public ByLongId(){}
+  public ByLongId(Long id){
+    this.id=id;
+  }
 }

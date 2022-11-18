@@ -12,11 +12,32 @@ import org.voyo.utils.HttpException.ReqBad;
 import org.voyo.utils.HttpException.ReqBadEnum;
 import org.voyo.utils.HttpException.ReqBadProfile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 
 @ControllerAdvice
 @Slf4j
 public class AdviceYoExceptHandler{
+  public static final String SQL_ERR="数据执行错误";
+  public static final String NORMAL_ERR="系统服务错误";
+
+  //global
+  @ExceptionHandler({Exception.class})
+  public ResponseEntity<String> handleGlobalException(
+      Exception e,
+      HttpServletResponse res
+  ){
+    e.printStackTrace();
+    log.error("Catch error: {}",e.toString());
+    return this.sendBody(HttpStatus.BAD_REQUEST,new ReqBadProfile(
+        ReqBadEnum.Normal.getCode(),
+        NORMAL_ERR,
+        e.toString()
+    ));
+  }
+
+
   //parameters
   @ExceptionHandler({MethodArgumentNotValidException.class, MissingServletRequestParameterException.class})
   public ResponseEntity<String> handleRequestParamsNotValidated(
@@ -36,6 +57,17 @@ public class AdviceYoExceptHandler{
     profile.setCode( ReqBadEnum.PaymentRequired.getCode());
     profile.setMsg(msg);
     return sendBody(ReqBadEnum.PaymentRequired.getHttpStatus(), profile);
+  }
+
+  //sql
+  @ExceptionHandler({SQLException.class})
+  public  ResponseEntity<String> handleSQLException(Exception e,HttpServletResponse res){
+    log.error("sql error :{}",e.toString());
+    return this.sendBody(HttpStatus.UNAUTHORIZED,new ReqBadProfile(
+        ReqBadEnum.SQLError.getCode(),
+        SQL_ERR,
+        e.toString()
+    ));
   }
 
   //request

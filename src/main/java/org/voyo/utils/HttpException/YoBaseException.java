@@ -12,5 +12,4 @@ public class YoBaseException extends RuntimeException{
   private Object data;
   private Integer code;
 
-
 }

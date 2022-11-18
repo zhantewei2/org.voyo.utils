@@ -34,7 +34,13 @@ public class UniqueId {
       ++this.index;
     }
 
-    String str = "" + nowTime + this.getRandomStr(3) + this.index;
-    return Long.valueOf(str);
+    String randomStr= this.index<100? this.getRandomStr(3):
+              this.index<1000? this.getRandomStr(2): this.getRandomStr(1);
+
+    return Long.valueOf(
+         nowTime+YoStr.padsLeft(2,String.valueOf(this.index),(char)48) + randomStr
+    );
+
   }
+
 }

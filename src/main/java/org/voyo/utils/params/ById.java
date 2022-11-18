@@ -7,4 +7,8 @@ import javax.validation.constraints.NotNull;
 public class ById<T> {
   @NotNull
   private T id;
+  public ById(){}
+  public ById(T id){
+    this.id=id;
+  }
 }
