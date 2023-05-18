@@ -5,9 +5,12 @@ import java.util.Date;
 public class UniqueId {
   private int index = 0;
   private Long preTime;
-  public static UniqueId uniqueIdInstance =new UniqueId();
+  public static UniqueId uniqueIdInstance = new UniqueId();
 
-  public static synchronized Long getUId(){
+  public UniqueId() {
+  }
+
+  public static synchronized Long getUId() {
     return uniqueIdInstance.getUniqueId();
   }
 
@@ -34,7 +37,6 @@ public class UniqueId {
       ++this.index;
     }
 
-    String str = "" + nowTime + this.getRandomStr(3) + this.index;
-    return Long.valueOf(str);
+    return Long.valueOf(nowTime + YoStr.padsLeft(2, String.valueOf(this.index), '0') + this.getRandomStr(3));
   }
 }

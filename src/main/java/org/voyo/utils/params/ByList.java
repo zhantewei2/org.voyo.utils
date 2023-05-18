@@ -13,4 +13,11 @@ public class ByList<T> {
   @Valid
   @NotNull
   private List<T> list;
+
+  public ByList() {}
+  public ByList(List<T> list){
+    this.list=list;
+  }
+
+
 }

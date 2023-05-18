@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class PgParams {
   @NotNull
   @Min(1)
-  @Max(100)
+  @Max(1000)
   private int pageSize;
   @NotNull
   @Min(1)

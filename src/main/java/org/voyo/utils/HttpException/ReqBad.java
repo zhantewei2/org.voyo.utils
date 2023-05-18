@@ -21,12 +21,14 @@ public class ReqBad extends RuntimeException{
     this.profile.setCode(reqBadEnum.getCode());
   }
   public <T> ReqBad(ReqBadEnum reqBadEnum,String msg,T data){
+    super(msg);
     this.call(reqBadEnum,msg,data);
   }
   public ReqBad(ReqBadEnum reqBadEnum){
     this.call(reqBadEnum,"",null);
   }
   public ReqBad(ReqBadEnum reqBadEnum,String msg){
+    super(msg);
     this.call(reqBadEnum,msg,null);
   }
 }
