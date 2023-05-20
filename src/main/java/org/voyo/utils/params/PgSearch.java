@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 public class PgSearch<T> {
   @NotNull
   @Min(1)
-  @Max(100)
+  @Max(1000)
   private Integer pageSize;
   @NotNull
   @Min(1)

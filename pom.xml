@@ -8,7 +8,7 @@
     <name>utils</name>
     <groupId>org.voyo</groupId>
     <description>des</description>
-    <version>1.3.6</version>
+    <version>1.6.0</version>
     <properties>
         <project.release.version>1.0.0</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

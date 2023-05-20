@@ -1,7 +1,5 @@
 package org.voyo.utils.utils;
 
-import org.yaml.snakeyaml.util.UriEncoder;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;

@@ -1,6 +1,11 @@
 package org.voyo.utils.utils;
 
 public class YoMath {
+  public static final String miniSource = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789";
+  public static final Long miniSourceLen = 62L;
+
+  public YoMath() {
+  }
 
   public static String randomId(int count) {
     StringBuilder stringBuilder = new StringBuilder();
@@ -17,7 +22,7 @@ public class YoMath {
   }
 
   public static char randomOne() {
-    int index = Double.valueOf(Math.floor(Math.random() * 3.0D)).intValue();
+    int index = Double.valueOf(Math.floor(Math.random() * 3.0)).intValue();
     int code;
     if (index == 0) {
       code = randomInt(48, 57);
@@ -34,22 +39,15 @@ public class YoMath {
     return Double.valueOf(Math.floor(Math.random() * (double)(end - start))).intValue() + start;
   }
 
-  final static public String miniSource="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789*~";
-  final static public Long miniSourceLen=64L;
+  public static String miniLong(Long source) {
+    StringBuilder stringBuilder = new StringBuilder();
 
-  public static String miniLong(Long source){
-    Long y;
-    StringBuilder stringBuilder=new StringBuilder();
-    do{
-      y=source% miniSourceLen;
-      source=source/miniSourceLen;
-      stringBuilder.append(miniSource.charAt(y.intValue()));
-    }while(source>= miniSourceLen);
+    do {
+      Long y = source % miniSourceLen;
+      source = source / miniSourceLen;
+      stringBuilder.append("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789".charAt(y.intValue()));
+    } while(source >= miniSourceLen);
+
     return stringBuilder.toString();
   }
-
-//  public static void main(String[] args){
-//    String r=miniLong(1468883403674775555L);
-//    System.out.println(r);
-//  }
 }
