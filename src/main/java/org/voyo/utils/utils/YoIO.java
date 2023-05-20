@@ -15,7 +15,7 @@ public class YoIO {
   public static String readStreamAsStr(InputStream inputStream) {
     ByteArrayOutputStream buffer=new ByteArrayOutputStream();
     try {
-      int chunkSize = 50;
+      int chunkSize = 1024*5;
       byte[] chunk = new byte[chunkSize];
       int readn;
       while ((readn = inputStream.read(chunk, 0, chunkSize)) > 0) {
@@ -31,5 +31,10 @@ public class YoIO {
       closeQuietly(inputStream);
       closeQuietly(buffer);
     }
+  }
+
+  public static <T> T readStreamAsJson(InputStream inputStream,Class<T> classType){
+    String content=readStreamAsStr(inputStream);
+    return YoObject.loadJson(content,classType);
   }
 }

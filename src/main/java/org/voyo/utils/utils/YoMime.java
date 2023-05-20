@@ -14,6 +14,8 @@ public class YoMime {
   public static final String MIME_SVG="image/svg+xml";
   public static final String MIME_WEBP="image/webp";
 
+  public static final String MIME_STREAM= "application/octet-stream";
+
   public static List<String> imageMime=Arrays.asList(
     MIME_JPG,MIME_BMP,MIME_GIF,MIME_ICO,MIME_PNG,MIME_SVG,MIME_WEBP,MIME_JPEG
   );
