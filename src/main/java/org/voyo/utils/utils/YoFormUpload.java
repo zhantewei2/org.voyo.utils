@@ -94,7 +94,7 @@ public class YoFormUpload {
     }
     //file
     if(file!=null){
-      formDataWriteFile(boundary,ops,file.getKey(),file.getName(),file.getMime(),file.getInputStream());
+      formDataWriteFile(boundary,ops,file.getKey(),file.getName(),file.getMime(),file.getInputStream(),file.getChunkSize());
     }
     ops.write((boundary+"--").getBytes());
     int statusCode=conn.getResponseCode();
@@ -129,7 +129,8 @@ public class YoFormUpload {
       +newLine
       +val+newLine;
   }
-  private void formDataWriteFile(String boundary,OutputStream ops,String key,String fileName,String fileMime,InputStream fileStream)throws Exception {
+  private void formDataWriteFile(String boundary,OutputStream ops,String key,String fileName,String fileMime,InputStream fileStream,Integer chunkSize)throws Exception {
+    chunkSize=chunkSize==null? chunkSizeDefault: chunkSize;
     fileMime= (fileMime==null||"".equals(fileMime))? defaultMime:fileMime;
     String prefix= boundary+newLine
       + "Content-Disposition: form-data; name=\""+key+"\"; "+"filename=\""+fileName+"\""+newLine
@@ -139,7 +140,7 @@ public class YoFormUpload {
 
     ops.write(prefix.getBytes());
     int readSize=0;
-    byte[] chunk=new byte[1024*300];
+    byte[] chunk=new byte[chunkSize];
     int count=0;
     while((readSize=fileStream.read(chunk))>0){
       ops.write(chunk,0,readSize);
