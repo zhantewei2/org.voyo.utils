@@ -8,9 +8,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.*;
 import java.util.Date;
 import java.util.Map;
 
@@ -36,6 +34,8 @@ public class YoFormUpload {
     private InputStream inputStream;
     //分块上传大小， 默认 1024*300 byte
     private Integer chunkSize;
+    //filelength
+    private Integer length;
   }
   @Data
   public static class FormUploadParams{
@@ -77,7 +77,7 @@ public class YoFormUpload {
     ReqParamsFile file=params.getFile();
 
 
-    String boundary="----"+new Date().getTime();
+    String boundary="-------------------------"+new Date().getTime();
     HttpURLConnection conn=buildConn(params,boundary);
 
     conn.connect();
@@ -94,9 +94,10 @@ public class YoFormUpload {
     }
     //file
     if(file!=null){
-      formDataWriteFile(boundary,ops,file.getKey(),file.getName(),file.getMime(),file.getInputStream(),file.getChunkSize());
+      formDataWriteFile(boundary,ops,file);
     }
-    ops.write((boundary+"--").getBytes());
+    //这里结尾其实可以不加newLine，部分解析框架需要加newLine,比如企微
+    ops.write((boundary+"--"+newLine).getBytes());
     int statusCode=conn.getResponseCode();
     YoIO.closeQuietly(ops);
     HttpResult result=new HttpResult();
@@ -111,6 +112,7 @@ public class YoFormUpload {
     if(query!=null)url+="?"+ YoUrl.encodeQuery(query);
 
     HttpURLConnection conn=null;
+//    Proxy proxy=new Proxy(Proxy.Type.HTTP,new InetSocketAddress("127.0.0.1",8888));
     if(url.startsWith("https")){
       conn=(HttpsURLConnection) new URL(url).openConnection();
     }else{
@@ -119,7 +121,7 @@ public class YoFormUpload {
     conn.setRequestProperty("Content-Type","multipart/form-data; boundary="+boundary);
     conn.setRequestMethod(reqParams.getMethod().toUpperCase());
     conn.setDoOutput(true);
-    conn.setChunkedStreamingMode(0);
+//    conn.setChunkedStreamingMode(100);
     return conn;
   }
 
@@ -129,11 +131,15 @@ public class YoFormUpload {
       +newLine
       +val+newLine;
   }
-  private void formDataWriteFile(String boundary,OutputStream ops,String key,String fileName,String fileMime,InputStream fileStream,Integer chunkSize)throws Exception {
-    chunkSize=chunkSize==null? chunkSizeDefault: chunkSize;
-    fileMime= (fileMime==null||"".equals(fileMime))? defaultMime:fileMime;
+  private void formDataWriteFile(String boundary,OutputStream ops,ReqParamsFile file)throws Exception {
+    Integer chunkSize=file.getChunkSize()==null? chunkSizeDefault: file.getChunkSize();
+    String fileMime= YoStr.isBlank(file.getMime())? defaultMime: file.getMime();
+    InputStream fileStream=file.getInputStream();
     String prefix= boundary+newLine
-      + "Content-Disposition: form-data; name=\""+key+"\"; "+"filename=\""+fileName+"\""+newLine
+      + "Content-Disposition: form-data; name=\"" + file.getKey()
+      + "\"; "+"filename=\""+file.getName()+"\""
+      + (file.getLength()!=null?"; filelength="+file.getLength():"")
+      + newLine
       + "Content-Type: "+fileMime+newLine
       + "Content-Transfer-Encoding: binary"+newLine
       + newLine;
