@@ -13,16 +13,29 @@ public class YoDate {
   public static Date parseDateStr(String str,String format) throws ParseException{
     return parse(str,StringUtils.isEmpty(format)?BASE_DATE_FORMAT:format);
   }
+  public static Date parseDateStr(String str)throws ParseException{
+    return parse(str,BASE_DATE_FORMAT);
+  }
   public static Date parseTimeStr(String str,String format) throws ParseException{
     return parse(str,StringUtils.isEmpty(format)?BASE_TIME_FORMAT:format);
   }
+  public static Date parseTimeStr(String str) throws ParseException{
+    return parse(str,BASE_TIME_FORMAT);
+  }
   public static String formatDate(Date date,String format){
     return format(date,StringUtils.isEmpty(format)?BASE_DATE_FORMAT:format);
+  }
+
+  public static String formatDate(Date date){
+    return format(date,BASE_DATE_FORMAT);
   }
   public static String formatTime(Date date,String format){
     return format(date,StringUtils.isEmpty(format)?BASE_TIME_FORMAT:format);
   }
 
+  public static String formatTime(Date date){
+    return format(date,BASE_TIME_FORMAT);
+  }
   public static Date parse(String str,String format) throws ParseException {
     SimpleDateFormat simpleDateFormat=new SimpleDateFormat(format);
     return simpleDateFormat.parse(str);
