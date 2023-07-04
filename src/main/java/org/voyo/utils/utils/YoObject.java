@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Slf4j
 public class YoObject {
-  private static ObjectMapper objectMapper=new ObjectMapper();
+  public static ObjectMapper objectMapper=new ObjectMapper();
   static {
 
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
