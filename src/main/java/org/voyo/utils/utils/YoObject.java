@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -13,37 +16,40 @@ import java.util.Map;
 
 @Slf4j
 public class YoObject {
-  private static ObjectMapper objectMapper=new ObjectMapper();
+  public static ObjectMapper objectMapper=new ObjectMapper();
+
   static {
 
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
   }
 
   public static <T> Boolean compareSameIncludeNull(T origin, T target) {
-    Class<?> sameClass = origin.getClass();
-    Field[] fields = sameClass.getDeclaredFields();
-    int i = 0;
+    MethodHandles.Lookup lookup= MethodHandles.lookup();
+    Class<?> originClass = origin.getClass();
+    Field[] fields = originClass.getDeclaredFields();
 
-    for(int len = fields.length; i < len; ++i) {
-      Field f = fields[i];
-      String key = f.getName();
+    String key;
+    MethodHandle methodHandle;
+    MethodType methodType;
+
+    for(Field f:fields) {
+      key = f.getName();
       key = key.substring(0, 1).toUpperCase() + key.substring(1);
+      methodType= MethodType.methodType(f.getType());
 
-      Method getMethod;
       try {
-        getMethod = sameClass.getMethod("get" + key);
-      } catch (NoSuchMethodException e) {
+        methodHandle = lookup.findVirtual(originClass,"get"+key,methodType);
+      } catch (NoSuchMethodException|IllegalAccessException e) {
         continue;
       }
 
-      Class<?> keyType = f.getType();
-      if (isEqualType(keyType)) {
+      if (isEqualType(methodType.returnType())) {
         try {
-          Object targetVal = getMethod.invoke(target);
-          if (targetVal == null || !targetVal.equals(getMethod.invoke(origin))) {
+          Object targetVal = methodHandle.invoke(target);
+          if (targetVal == null || !targetVal.equals(methodHandle.invoke(origin))) {
             return false;
           }
-        } catch (Exception e) {
+        } catch (Throwable e) {
         }
       }
     }
@@ -52,31 +58,31 @@ public class YoObject {
   }
 
   public static <T> Boolean compareSame(T origin, T target) {
-    Class<?> sameClass = origin.getClass();
-    Field[] fields = sameClass.getDeclaredFields();
-    int i = 0;
+    MethodHandles.Lookup lookup=MethodHandles.lookup();
 
-    for(int len = fields.length; i < len; ++i) {
-      Field f = fields[i];
-      String key = f.getName();
+    Class<?> originClass = origin.getClass();
+    Field[] fields = originClass.getDeclaredFields();
+
+    String key;
+    MethodType methodType;
+    MethodHandle methodHandle;
+    for(Field f:fields) {
+      key = f.getName();
       key = key.substring(0, 1).toUpperCase() + key.substring(1);
-
-      Method getMethod;
+      methodType = MethodType.methodType(f.getType());
       try {
-        getMethod = sameClass.getMethod("get" + key);
-      } catch (NoSuchMethodException e) {
+        methodHandle = lookup.findVirtual(originClass,"get"+key,methodType);
+      } catch (NoSuchMethodException|IllegalAccessException e) {
         continue;
       }
 
-      Class<?> keyType = f.getType();
-      if (isEqualType(keyType)) {
+      if (isEqualType(methodType.returnType())) {
         try {
-          Object targetVal = getMethod.invoke(target);
-          if (targetVal != null && !targetVal.equals(getMethod.invoke(origin))) {
+          Object targetVal = methodHandle.invoke(target);
+          if (targetVal != null && !targetVal.equals(methodHandle.invoke(origin))) {
             return false;
           }
-        } catch (Exception e) {
-        }
+        } catch (Throwable e) {}
       }
     }
 
