@@ -19,10 +19,15 @@ public class YoMime {
   public static List<String> imageMime=Arrays.asList(
     MIME_JPG,MIME_BMP,MIME_GIF,MIME_ICO,MIME_PNG,MIME_SVG,MIME_WEBP,MIME_JPEG
   );
+  public static List<String> imageExtList=Arrays.asList(
+   "jpg","bmp","gif","svg","ico","png","svg","webp","jpeg"
+  );
   public static HashMap<String,String> extMapping;
   public static boolean isImageMime(String mime){
     return imageMime.contains(mime);
   }
+
+  public static boolean isImageExt(String ext){return imageExtList.contains(ext);};
 
   static {
        extMapping=new HashMap<>();

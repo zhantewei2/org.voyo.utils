@@ -35,8 +35,8 @@ public class YoPath {
     String content=stringBuilder.toString();
     return content.substring(0,content.length()-1);
   }
+  public static String getSuffix(String fileName){
 
-  private static String getSuffix(String fileName){
     if(YoStr.isBlank(fileName))return "";
     int lastIndex=fileName.lastIndexOf(".");
     return fileName.substring(lastIndex+1);

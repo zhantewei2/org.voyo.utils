@@ -8,6 +8,14 @@ public class YoStr {
         return str==null||"".equals(str);
     }
 
+    public static boolean isAnyBlank(String... items){
+        if(items==null ) return true;
+        for(String i:items){
+            if(isBlank(i)) return true;
+        }
+        return false;
+    }
+
     public static String padsLeft(int count, String str, String padPer) {
         return padsLeft(count, str, padPer.charAt(0));
     }
