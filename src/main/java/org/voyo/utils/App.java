@@ -12,6 +12,8 @@ import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class App {
@@ -19,22 +21,13 @@ public class App {
 
     @SneakyThrows
   public static void main(String[] args){
-      MethodHandles.Lookup lookup= MethodHandles.lookup();
+        Pattern p= Pattern.compile("[^\\/]+?(?=(\\?|#|$))");
+        Matcher m=p.matcher("https://www.baidu.com/abc.jpg?sx=1#1");
+        if(m.find()){
+            System.out.println("group"+m.group());
+        }else{
 
-      AA aa=new AA();
-      aa.setName("name1");
-      aa.setAge(12);
-      Class<AA> aaClass=AA.class;
-      Field[] fields= aaClass.getDeclaredFields();
-
-      for(Field f:fields){
-          String name=f.getName();
-          String methodName="get"+name.substring(0,1).toUpperCase()+name.substring(1);
-          MethodType methodType=MethodType.methodType(f.getType());
-          MethodHandle getMethod= lookup.findVirtual(aaClass,methodName,methodType);
-          Object r=getMethod.invoke(aa);
-          System.out.println(r);
-      }
+        }
   }
 
 
