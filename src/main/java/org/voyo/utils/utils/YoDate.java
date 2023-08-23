@@ -4,6 +4,7 @@ import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class YoDate {
@@ -43,5 +44,31 @@ public class YoDate {
   public static String format(Date date,String format){
     SimpleDateFormat simpleDateFormat=new SimpleDateFormat(format);
     return simpleDateFormat.format(date);
+  }
+
+  //获取距当前时间最近的整点时间
+  public static Calendar getClosestHourCalendar(){
+    Calendar c= Calendar.getInstance();
+    int minute=c.get(Calendar.MINUTE);
+    if(minute>30) c.add(Calendar.HOUR_OF_DAY,1);
+    c.set(Calendar.MINUTE,0);
+    c.set(Calendar.SECOND,0);
+    return c;
+  }
+
+  //获取距当前时间最近的零点时间
+  public static Calendar getClosestDayTime(){
+    Calendar c=getClosestHourCalendar();
+    int hour=c.get(Calendar.HOUR_OF_DAY);
+    if(hour>12) c.add(Calendar.DAY_OF_YEAR,1);
+    c.set(Calendar.HOUR_OF_DAY,0);
+    return c;
+  }
+  //单位为秒的时间戳，转为Date.
+  public static Date secondTimestampToDate(Long timestamp){
+    if(timestamp==null)return null;
+    Date d=new Date();
+    d.setTime(timestamp*1000);
+    return d;
   }
 }

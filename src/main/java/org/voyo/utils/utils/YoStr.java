@@ -1,5 +1,9 @@
 package org.voyo.utils.utils;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class YoStr {
     public YoStr() {
     }
@@ -52,5 +56,17 @@ public class YoStr {
 
     public boolean equals(String a, String b) {
         return a != null && a.equals(b);
+    }
+
+    public static List<String> toList(String listStr,String segment){
+        String[] a=listStr.split(segment);
+        return a.length>0 ? Arrays.asList(a): null;
+    }
+
+    public static List<Long> toListLong(String listStr,String segment){
+        String[] a=listStr.split(segment);
+        return a.length>0?
+                Arrays.stream(a).map(Long::valueOf).collect(Collectors.toList()):
+                null;
     }
 }
