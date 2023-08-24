@@ -71,4 +71,21 @@ public class YoDate {
     d.setTime(timestamp*1000);
     return d;
   }
+  //获得当前的凌晨时间
+  public static Calendar getMidnight(Calendar calendar){
+    Calendar d=(Calendar) calendar.clone();
+    d.set(Calendar.HOUR_OF_DAY,0);
+    d.set(Calendar.MINUTE,0);
+    d.set(Calendar.SECOND,0);
+    return d;
+  }
+  //获得次日的凌晨时间
+  public static Calendar getNextMidnight(Calendar calendar){
+    Calendar d=(Calendar) calendar.clone();
+    d.set(Calendar.HOUR_OF_DAY,0);
+    d.set(Calendar.MINUTE,0);
+    d.set(Calendar.SECOND,0);
+    d.add(Calendar.DAY_OF_YEAR,1);
+    return d;
+  }
 }
