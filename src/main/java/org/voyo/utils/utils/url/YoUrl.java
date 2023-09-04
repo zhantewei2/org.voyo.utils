@@ -77,8 +77,19 @@ public class YoUrl {
 
   public static String encodeQuery(Map<String,Object> query){
     StringBuilder builder=new StringBuilder();
+    String value;
+    String key;
     for(Map.Entry<String,Object> entry:query.entrySet()){
-      builder.append(String.format("%s=%s&",entry.getKey(),entry.getValue()));
+      key=entry.getKey();
+      if(YoStr.isBlank(key)) continue;
+      value=entry.getValue()!=null?(String) entry.getValue(): "";
+      System.out.println("key:"+entry.getKey());
+      try {
+        value = URLEncoder.encode(value, urlEncodeEnc);
+      }catch (UnsupportedEncodingException e){
+        value = "";
+      }
+      builder.append(String.format("%s=%s&",key,value));
     }
     builder.deleteCharAt(builder.length()-1);
     return builder.toString();
@@ -94,7 +105,6 @@ public class YoUrl {
     UrlNode urlNode=parse(url);
     StringBuilder stringBuilder=new StringBuilder();
     stringBuilder.append(urlNode.getPureUrl());
-
     Map<String,Object> query=urlNode.getQuery();
     query.putAll(additionQuery);
     String queryStr=encodeQuery(query);
