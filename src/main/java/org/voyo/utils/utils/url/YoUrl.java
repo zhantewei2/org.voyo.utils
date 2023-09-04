@@ -1,6 +1,7 @@
 package org.voyo.utils.utils.url;
 
 import lombok.extern.slf4j.Slf4j;
+import org.voyo.utils.utils.YoMap;
 import org.voyo.utils.utils.YoStr;
 
 import java.io.UnsupportedEncodingException;
@@ -82,8 +83,8 @@ public class YoUrl {
     for(Map.Entry<String,Object> entry:query.entrySet()){
       key=entry.getKey();
       if(YoStr.isBlank(key)) continue;
-      value=entry.getValue()!=null?(String) entry.getValue(): "";
-      System.out.println("key:"+entry.getKey());
+
+      value=entry.getValue()!=null? String.valueOf(entry.getValue()): "";
       try {
         value = URLEncoder.encode(value, urlEncodeEnc);
       }catch (UnsupportedEncodingException e){
@@ -101,16 +102,36 @@ public class YoUrl {
    * @param additionQuery
    * @return
    */
-  public static String additionUrl(String url,Map<String,Object> additionQuery){
-    UrlNode urlNode=parse(url);
-    StringBuilder stringBuilder=new StringBuilder();
-    stringBuilder.append(urlNode.getPureUrl());
+  public static String additionUrl(String url,Map<String,Object> additionQuery,String tag){
+    return additionUrl(parse(url),additionQuery,tag);
+  }
+  /**
+   * 为url添加新query参数，原query与tag仍保留
+   */
+  public static String additionUrl(UrlNode urlNode,Map<String,Object> additionQuery,String tag){
     Map<String,Object> query=urlNode.getQuery();
-    query.putAll(additionQuery);
-    String queryStr=encodeQuery(query);
+    if(additionQuery!=null) query.putAll(additionQuery);
+    return combineUrl(urlNode.getPureUrl(),query,YoStr.isBlank(tag)?urlNode.getTag():tag);
+  }
+  public static String additionUrl(UrlNode urlNode,Map<String,Object> additionQuery){
+    return additionUrl(urlNode,additionQuery,null);
+  }
+  public static String additionUrl(String url,Map<String,Object> additionQuery){
+    return additionUrl(parse(url),additionQuery,null);
+  }
+  /**
+   * 组合url
+   * @param pureUrl
+   * @param query
+   * @param tag
+   * @return
+   */
+  public static String combineUrl(String pureUrl,Map<String,Object> query,String tag){
+    StringBuilder stringBuilder=new StringBuilder();
+    stringBuilder.append(pureUrl);
+    String queryStr=query!=null?encodeQuery(query):null;
     if(!YoStr.isBlank(queryStr)) stringBuilder.append("?").append(queryStr);
-    if(!YoStr.isBlank(urlNode.getTag())) stringBuilder.append("#").append(urlNode.getTag());
+    if(!YoStr.isBlank(tag)) stringBuilder.append("#").append(tag);
     return stringBuilder.toString();
-
   }
 }
