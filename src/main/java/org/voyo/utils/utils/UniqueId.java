@@ -37,6 +37,6 @@ public class UniqueId {
       ++this.index;
     }
 
-    return Long.valueOf(nowTime + YoStr.padsLeft(2, String.valueOf(this.index), '0') + this.getRandomStr(3));
+    return Long.valueOf(nowTime + YoStr.padsLeft(3, String.valueOf(this.index), '0') + this.getRandomStr(2));
   }
 }
