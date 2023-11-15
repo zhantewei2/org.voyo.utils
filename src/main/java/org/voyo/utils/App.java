@@ -20,19 +20,9 @@ import java.util.stream.Collectors;
 
 public class App {
     public static void main(String[] args) throws Exception{
-        Integer threadCount=2;
-        ExecutorService pool= Executors.newFixedThreadPool(threadCount);
-
-        List<Callable<Void>> queue=new ArrayList<>();
-        List<String> a=new ArrayList<>();
-        System.out.println(System.identityHashCode(a));
-        for(int i=0;i<threadCount;i++) {
-            queue.add(() -> {
-                System.out.println(System.identityHashCode(a));
-                return null;
-            });
-        }
-        pool.invokeAll(queue);
+        List<Integer> arr=Arrays.asList(5,6,7,1,2,3,4);
+        List<String> arr2=arr.stream().sorted((a,b)->a-b).map(i->String.valueOf(i)).collect(Collectors.toList());
+        System.out.println(String.join(":",arr2.toArray(new String[arr2.size()])));
     }
 
 }

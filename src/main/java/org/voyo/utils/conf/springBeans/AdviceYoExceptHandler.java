@@ -1,6 +1,8 @@
 package org.voyo.utils.conf.springBeans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -27,9 +29,15 @@ public class AdviceYoExceptHandler {
 
   @ExceptionHandler({Exception.class})
   public ResponseEntity<String> handleGlobalException(Exception e, HttpServletResponse res) {
-    e.printStackTrace();
-    log.error("Catch error: ", e);
-    return this.sendBody(HttpStatus.BAD_REQUEST, new ReqBadProfile(ReqBadEnum.Normal.getCode(), "系统服务错误", e.toString()));
+    String message=e.getMessage();
+    if(e instanceof IOException && message.contains("Broken pipe")){
+      log.warn("IOException:{}",message);
+      return null;
+    }else {
+      e.printStackTrace();
+      log.error("Catch error: ", e);
+      return this.sendBody(HttpStatus.BAD_REQUEST, new ReqBadProfile(ReqBadEnum.Normal.getCode(), "系统服务错误", e.toString()));
+    }
   }
 
   @ExceptionHandler({MethodArgumentNotValidException.class, MissingServletRequestParameterException.class})

@@ -3,6 +3,7 @@ package org.voyo.utils.HttpException;
 import org.springframework.http.HttpStatus;
 
 public enum ReqBadEnum {
+
   Normal(1,HttpStatus.BAD_REQUEST),
   NotLogin(2,HttpStatus.UNAUTHORIZED),
   ExpiredLogin(3,HttpStatus.UNAUTHORIZED),
