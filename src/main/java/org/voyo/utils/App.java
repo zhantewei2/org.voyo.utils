@@ -20,9 +20,7 @@ import java.util.stream.Collectors;
 
 public class App {
     public static void main(String[] args) throws Exception{
-        List<Integer> arr=Arrays.asList(5,6,7,1,2,3,4);
-        List<String> arr2=arr.stream().sorted((a,b)->a-b).map(i->String.valueOf(i)).collect(Collectors.toList());
-        System.out.println(String.join(":",arr2.toArray(new String[arr2.size()])));
+
     }
 
 }

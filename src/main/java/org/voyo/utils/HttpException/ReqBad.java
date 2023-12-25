@@ -31,4 +31,8 @@ public class ReqBad extends RuntimeException{
     super(msg);
     this.call(reqBadEnum,msg,null);
   }
+
+  public boolean equals(ReqBadEnum reqBadEnum){
+    return this.profile.getCode() == reqBadEnum.getCode();
+  }
 }
