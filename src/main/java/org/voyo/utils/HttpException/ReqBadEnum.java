@@ -23,7 +23,8 @@ public enum ReqBadEnum {
   UpdateError(310,HttpStatus.BAD_REQUEST),
   BadFeign(407,HttpStatus.BAD_REQUEST),
   VisitBusy(501,HttpStatus.BAD_REQUEST),
-  VisitLimitation(502,HttpStatus.BAD_REQUEST);
+  VisitLimitation(502,HttpStatus.BAD_REQUEST),
+  RETRY(1001,HttpStatus.BAD_REQUEST);
 
   private int code;
   private HttpStatus httpStatus;
