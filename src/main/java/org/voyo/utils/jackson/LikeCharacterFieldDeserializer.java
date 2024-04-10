@@ -6,17 +6,16 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import org.voyo.utils.jackson.format.Trim;
+import org.voyo.utils.utils.YoStr;
 
 import java.io.IOException;
 
-
-public class TrimFieldDeserializer extends JsonDeserializer<String> implements ContextualDeserializer {
+public class LikeCharacterFieldDeserializer extends JsonDeserializer<String> implements ContextualDeserializer {
     @Override
-    public String deserialize(JsonParser parser, DeserializationContext ctx){
-        try {
-            String val = parser.getText();
-            return val.trim();
+    public String deserialize(JsonParser parser, DeserializationContext ctx) {
+        try{
+            String val=parser.getText();
+            return YoStr.isBlank(val)? val : val.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_");
         }catch (IOException e){
             return null;
         }
