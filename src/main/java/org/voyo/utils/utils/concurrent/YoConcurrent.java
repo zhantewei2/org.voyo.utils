@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 public class YoConcurrent {
     /**
      * concurrent run task.
+     * 一次错误，会关闭一个线程。 出现concurrentPoolSize次错误后，所有线程均关闭
      * @param list
      * @param concurrentSize
      * @param consumer

@@ -86,4 +86,12 @@ public class YoList {
 
         }
     }
+
+    public static <T,K,V> Map<K,V> toMap(Collection<T> list, Function<T,K> getKey, Function<T,V> getVal){
+        Map<K,V> m=new HashMap<>();
+        for(T i:list){
+            m.putIfAbsent(getKey.apply(i), getVal.apply(i));
+        }
+        return m;
+    }
 }

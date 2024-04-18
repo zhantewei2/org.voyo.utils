@@ -8,8 +8,11 @@ import org.voyo.utils.jackson.LikeCharacterFieldDeserializer;
 import org.voyo.utils.jackson.TrimFieldDeserializer;
 import org.voyo.utils.jackson.format.LikeCharacter;
 import org.voyo.utils.jackson.format.Trim;
+import org.voyo.utils.utils.YoList;
+import org.voyo.utils.utils.YoObject;
 import org.voyo.utils.utils.concurrent.YoConcurrent;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class App {
     @Setter
@@ -17,45 +20,22 @@ public class App {
     public static class Tt{
         @LikeCharacter
         private String name;
-    }
-
-    public static class AA extends JacksonAnnotationIntrospector{
-        @Override
-        public Object findDeserializer(Annotated a) {
-            if(a.hasAnnotation(LikeCharacter.class)){
-                System.out.println(12);
-                return new LikeCharacterFieldDeserializer();
-            }
-            if(a.hasAnnotation(Trim.class)){
-                return new TrimFieldDeserializer();
-            }
-            return super.findDeserializer(a);
+        private String name2;
+        Tt(String name,String name2){
+            this.name=name;
+            this.name2=name2;
         }
-    }
-
-    public void run(){}
-
-    public void runConcurrent(){
-        List<String> list=new ArrayList<>(Arrays.asList("x","b","c","d","e","f","g","h","x","b","c","d","e","f","g","h"));
-        try {
-            YoConcurrent.concurrentRun(list, 5, item -> {
-                try {
-                    Thread.sleep(100+(int) (Math.ceil(Math.random() * 500)));
-                    System.out.println("item:" + item);
-                } catch (Exception e) {
-
-                }
-            });
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        System.out.println("end");
     }
 
     public static void main(String[] args) throws Exception{
-        App app=new App();
-        app.runConcurrent();
+        List<Tt> tt=new ArrayList<>();
 
+        tt.add(new Tt("2x","b"));
+        tt.add(new Tt("b","c"));
+        tt.add(new Tt("x","x"));
+
+        Map<String,String> m= YoList.toMap(tt,Tt::getName,Tt::getName2);
+        System.out.println(m);
     }
 
 
