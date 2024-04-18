@@ -1,8 +1,6 @@
 package org.voyo.utils.utils;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -63,5 +61,29 @@ public class YoList {
 
     public static <T> boolean isEmpty(List<T> list) {
         return list==null || list.isEmpty();
+    }
+
+    public static <T> void partitionRun(Collection<T> collection,int partitionSize,Consumer<List<T>> consumer){
+        List<T> partList=new ArrayList<>();
+        int index=0;
+        Iterator<T> iterator=collection.stream().iterator();
+        while(true){
+            index++;
+            if(iterator.hasNext()){
+                partList.add(iterator.next());
+                if(index>=partitionSize){
+                    consumer.accept(partList);
+                    partList.clear();
+                    index=0;
+                }
+            }else{
+                if(!partList.isEmpty()){
+                    consumer.accept(partList);
+                    partList.clear();
+                }
+                break;
+            }
+
+        }
     }
 }

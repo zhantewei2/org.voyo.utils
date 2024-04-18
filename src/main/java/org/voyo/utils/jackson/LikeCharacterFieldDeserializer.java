@@ -14,8 +14,9 @@ public class LikeCharacterFieldDeserializer extends JsonDeserializer<String> imp
     @Override
     public String deserialize(JsonParser parser, DeserializationContext ctx) {
         try{
+            System.out.println(123);
             String val=parser.getText();
-            return YoStr.isBlank(val)? val : val.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_");
+            return YoStr.isBlank(val)? val : val.trim().replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_");
         }catch (IOException e){
             return null;
         }
