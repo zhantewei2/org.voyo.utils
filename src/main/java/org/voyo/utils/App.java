@@ -37,14 +37,19 @@ public class App {
 
     public void runConcurrent(){
         List<String> list=new ArrayList<>(Arrays.asList("x","b","c","d","e","f","g","h","x","b","c","d","e","f","g","h"));
-        YoConcurrent.concurrentRun(list,2,item->{
-            try {
-                Thread.sleep((int)(Math.ceil(Math.random()*500)));
-                System.out.println("item:" + item);
-            }catch (Exception e){
+        try {
+            YoConcurrent.concurrentRun(list, 5, item -> {
+                try {
+                    Thread.sleep(100+(int) (Math.ceil(Math.random() * 500)));
+                    System.out.println("item:" + item);
+                } catch (Exception e) {
 
-            }
-        });
+                }
+            });
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        System.out.println("end");
     }
 
     public static void main(String[] args) throws Exception{

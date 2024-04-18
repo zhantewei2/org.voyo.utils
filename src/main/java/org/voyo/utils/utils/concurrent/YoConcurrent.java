@@ -14,9 +14,10 @@ public class YoConcurrent {
      * @param consumer
      * @param <T>
      */
-    public static <T> void concurrentRun(List<T> list, int concurrentSize, Consumer<T> consumer){
+    public static <T> void concurrentRun(List<T> list, int concurrentPoolSize, Consumer<T> consumer) throws InterruptedException{
         Iterator<T> iterator=list.stream().iterator();
-        while(concurrentSize-- >0){
+        List<Thread> threads=new ArrayList<>();
+        while(concurrentPoolSize-- >0){
             Thread thread=new Thread(()->{
                 T item=null;
                 while(true) {
@@ -31,7 +32,13 @@ public class YoConcurrent {
                     }
                 }
             });
+            thread.setDaemon(true);
             thread.start();
+            threads.add(thread);
+        }
+
+        for(Thread thread:threads){
+            thread.join();
         }
     }
 }
