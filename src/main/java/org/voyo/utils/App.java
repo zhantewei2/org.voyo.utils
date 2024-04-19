@@ -10,8 +10,10 @@ import org.voyo.utils.jackson.format.LikeCharacter;
 import org.voyo.utils.jackson.format.Trim;
 import org.voyo.utils.utils.YoList;
 import org.voyo.utils.utils.YoObject;
+import org.voyo.utils.utils.YoStr;
 import org.voyo.utils.utils.concurrent.YoConcurrent;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class App {
@@ -27,15 +29,10 @@ public class App {
         }
     }
 
+    public void run(){}
     public static void main(String[] args) throws Exception{
-        List<Tt> tt=new ArrayList<>();
 
-        tt.add(new Tt("2x","b"));
-        tt.add(new Tt("b","c"));
-        tt.add(new Tt("x","x"));
-
-        Map<String,String> m= YoList.toMap(tt,Tt::getName,Tt::getName2);
-        System.out.println(m);
+        System.out.println(YoStr.underlineKeyToHump("xx_a_cc"));
     }
 
 
