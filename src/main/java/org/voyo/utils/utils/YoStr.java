@@ -92,4 +92,10 @@ public class YoStr {
             return m.group(1).toUpperCase();
         });
     }
+
+    public static String humpKeyToUnderline(String key){
+        return replaceAll(key,"(?<!^)[A-Z]",m->{
+            return "_"+m.group().toLowerCase();
+        });
+    }
 }
