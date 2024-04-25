@@ -4,6 +4,10 @@ import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -87,5 +91,20 @@ public class YoDate {
     d.set(Calendar.SECOND,0);
     d.add(Calendar.DAY_OF_YEAR,1);
     return d;
+  }
+  //获得两个日期之间的天数
+  public static long getDiffDays(Date a,Date b){
+    ZoneId zoneId=ZoneId.systemDefault();
+    LocalDateTime la=a.toInstant().atZone(zoneId).toLocalDateTime();
+    LocalDateTime lb=b.toInstant().atZone(zoneId).toLocalDateTime();
+    return ChronoUnit.DAYS.between(la,lb);
+  }
+
+  //根据日 获取两个日期之间的天数
+  public static long getDiffDaysByDate(Date a,Date b){
+    ZoneId zoneId=ZoneId.systemDefault();
+    LocalDate la=a.toInstant().atZone(zoneId).toLocalDate();
+    LocalDate lb=b.toInstant().atZone(zoneId).toLocalDate();
+    return ChronoUnit.DAYS.between(la,lb);
   }
 }
