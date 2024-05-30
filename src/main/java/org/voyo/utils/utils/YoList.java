@@ -1,6 +1,9 @@
 package org.voyo.utils.utils;
 
+import org.voyo.utils.params.Tuple2;
+
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -93,5 +96,33 @@ public class YoList {
             m.putIfAbsent(getKey.apply(i), getVal.apply(i));
         }
         return m;
+    }
+
+
+    public static <T,S> List<T> notIn(List<T> originList, List<S> dataList, BiPredicate<T,S> predicate){
+        return originList.stream().filter(i->{
+            return YoList.<S>findFirst(dataList,j->predicate.test(i,j)) == null;
+        }).collect(Collectors.toList());
+    }
+
+    public static <T,S> List<T> in(List<T> originList,List<S> dataList, BiPredicate<T,S> predicate){
+        return originList.stream().filter(i->{
+            return YoList.<S>findFirst(dataList,j->predicate.test(i,j))!= null;
+        }).collect(Collectors.toList());
+    }
+
+    public static <T,S> Tuple2<List<T>,List<T>> notInAndIn(
+            List<T> originList,
+            List<S> dataList,
+            BiPredicate<T,S> predicateNotIn,
+            BiPredicate<T,S> predicateIn
+    ){
+        List<T> notInList=new ArrayList<>();
+        List<T> inList=new ArrayList<>();
+        originList.forEach(i->{
+            if(YoList.<S>findFirst(dataList,j->predicateNotIn.test(i,j)) == null) notInList.add(i);
+            if(YoList.<S>findFirst(dataList,j->predicateIn.test(i,j))!=null ) inList.add(i);
+        });
+        return new Tuple2(notInList,inList);
     }
 }

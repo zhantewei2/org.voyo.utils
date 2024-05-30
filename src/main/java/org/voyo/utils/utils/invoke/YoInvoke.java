@@ -1,7 +1,5 @@
 package org.voyo.utils.utils.invoke;
 
-import sun.lwawt.macosx.CSystemTray;
-
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;

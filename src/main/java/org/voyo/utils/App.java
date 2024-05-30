@@ -2,10 +2,16 @@ package org.voyo.utils;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.voyo.utils.utils.YoList;
+import org.voyo.utils.utils.YoObject;
 import org.voyo.utils.utils.invoke.YoInvoke;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class App {
     public static class Tt {
@@ -40,90 +46,22 @@ public class App {
         public void setAge2(Integer age){
             this.age=age;
         }
+        public Tt(String name,Integer age){
+            this.name=name;
+            this.age=age;
+        }
 
     }
 
     public static <T> void main(String[] args) throws Exception{
-        run3();
-        run2();
-        run1();
-    }
+        List<Tt> list1=new ArrayList<>();
+        list1.add(new Tt("a",1));
+        list1.add(new Tt("b",2));
 
-    public static void run2(){
-        int total=10000;
-        long start=System.currentTimeMillis();
-        while(total>0) {
-            Tt t1 = new Tt();
-            Tt t2 = new Tt();
-            t1.setAge(1);
-            t1.setName("a");
-            t2.setName("b");
-            t2.setAge(2);
-            t1.setAge(t2.getAge());
-            t1.setName(t2.getName());
-            total--;
-        }
-        System.out.println("complete, duration:"+ String.valueOf(System.currentTimeMillis()-start));
-    }
-    public static void run1(){
-        int total=10000;
-        YoInvoke<Tt> yoInvoke = new YoInvoke<>(Tt.class);
-        long start=System.currentTimeMillis();
-        while(total>0) {
-            Tt t1 = new Tt();
-            Tt t2 = new Tt();
-            t1.setAge(1);
-            t1.setName("a");
-            t2.setName("b");
-            t2.setAge(2);
-            yoInvoke.assign(t1, t2);
-            total--;
-        }
-        System.out.println("complete, duration:"+ String.valueOf(System.currentTimeMillis()-start));
-    }
-    public static void run3(){
-        int total=10000;
-        long start=System.currentTimeMillis();
-        while(total>0) {
-            Tt t1 = new Tt();
-            Tt t2 = new Tt();
-            t1.setAge(1);
-            t1.setName("a");
-            t2.setName("b");
-            t2.setAge(2);
-            assign(t1,t2);
-            total--;
-        }
-        System.out.println("complete, duration:"+ String.valueOf(System.currentTimeMillis()-start));
-    }
-    public static String resolveHumpKey(String prefix, String key) {
-        return prefix + key.substring(0, 1).toUpperCase() + key.substring(1);
-    }
+        List<String> b= Arrays.asList("a","c");
 
-    public static void assign(Object b, Object a) {
-        Class<?> aClass=a.getClass();
-        Class<?> bClass=b.getClass();
-        Field[] afs=aClass.getDeclaredFields();
-        Field[] bfs=bClass.getDeclaredFields();
-        String key;
-        String getKey;
-        String setKey;
-        Method getMethod;
-        Method setMethod;
-        for(Field field:afs){
-            key=field.getName();
-            getKey=resolveHumpKey("get",key);
-            setKey=resolveHumpKey("set",key);
-            try {
-                getMethod= aClass.getMethod(getKey);
-                setMethod= bClass.getMethod(setKey,field.getType());
-            }catch (Exception e){
-                continue;
-            }
-            try {
-                setMethod.invoke(b,getMethod.invoke(a));
-            }catch (Exception e){}
-        }
 
     }
+
+
 }
