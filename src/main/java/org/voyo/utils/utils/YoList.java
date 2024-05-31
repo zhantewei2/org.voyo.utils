@@ -111,18 +111,18 @@ public class YoList {
         }).collect(Collectors.toList());
     }
 
-    public static <T,S> Tuple2<List<T>,List<T>> notInAndIn(
+    public static <T,S> Tuple2<List<T>,List<T>> inAndIn(
             List<T> originList,
             List<S> dataList,
-            BiPredicate<T,S> predicateNotIn,
-            BiPredicate<T,S> predicateIn
+            BiPredicate<T,S> predicateIn1,
+            BiPredicate<T,S> predicateIn2
     ){
-        List<T> notInList=new ArrayList<>();
-        List<T> inList=new ArrayList<>();
+        List<T> inList1=new ArrayList<>();
+        List<T> inList2=new ArrayList<>();
         originList.forEach(i->{
-            if(YoList.<S>findFirst(dataList,j->predicateNotIn.test(i,j)) == null) notInList.add(i);
-            if(YoList.<S>findFirst(dataList,j->predicateIn.test(i,j))!=null ) inList.add(i);
+            if(YoList.<S>findFirst(dataList,j->predicateIn1.test(i,j))!=null) inList1.add(i);
+            if(YoList.<S>findFirst(dataList,j->predicateIn2.test(i,j))!=null ) inList2.add(i);
         });
-        return new Tuple2(notInList,inList);
+        return new Tuple2(inList1,inList1);
     }
 }
