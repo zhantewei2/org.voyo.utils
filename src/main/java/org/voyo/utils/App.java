@@ -1,18 +1,6 @@
 package org.voyo.utils;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.voyo.utils.utils.YoList;
-import org.voyo.utils.utils.YoObject;
-import org.voyo.utils.utils.invoke.YoInvoke;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 public class App {
     public static class Tt {
 
@@ -54,12 +42,6 @@ public class App {
     }
 
     public static <T> void main(String[] args) throws Exception{
-        List<Tt> list1=new ArrayList<>();
-        list1.add(new Tt("a",1));
-        list1.add(new Tt("b",2));
-
-        List<String> b= Arrays.asList("a","c");
-
 
     }
 

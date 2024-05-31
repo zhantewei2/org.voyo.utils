@@ -3,14 +3,20 @@ package org.voyo.utils.utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.SerializerFactory;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
+import org.voyo.utils.jackson.YoJackson;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,9 +25,12 @@ public class YoObject {
   public static ObjectMapper objectMapper=new ObjectMapper();
 
   static {
-
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+    objectMapper.registerModule(YoJackson.createModule());
   }
+
+
+
 
   public static <T> Boolean compareSameIncludeNull(T origin, T target) {
     MethodHandles.Lookup lookup= MethodHandles.lookup();
