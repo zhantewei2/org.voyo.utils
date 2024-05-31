@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class YoList {
@@ -111,18 +112,21 @@ public class YoList {
         }).collect(Collectors.toList());
     }
 
-    public static <T,S> Tuple2<List<T>,List<T>> inAndIn(
-            List<T> originList,
-            List<S> dataList,
-            BiPredicate<T,S> predicateIn1,
-            BiPredicate<T,S> predicateIn2
+    public static <T,S> Tuple2<List<T>,List<T>> notInAndIn(
+        List<T> originList,
+        List<S> dataList,
+        Predicate<T> predicate1,
+        BiPredicate<T,S> predicateNotIn1,
+        BiPredicate<T,S> predicateIn2
     ){
-        List<T> inList1=new ArrayList<>();
-        List<T> inList2=new ArrayList<>();
+        List<T> list1=new ArrayList<>();
+        List<T> list2=new ArrayList<>();
         originList.forEach(i->{
-            if(YoList.<S>findFirst(dataList,j->predicateIn1.test(i,j))!=null) inList1.add(i);
-            if(YoList.<S>findFirst(dataList,j->predicateIn2.test(i,j))!=null ) inList2.add(i);
+            if(predicate1.test(i)){
+                if(YoList.<S>findFirst(dataList,j->predicateNotIn1.test(i,j))==null) list1.add(i);
+            }
+            if(YoList.<S>findFirst(dataList,j->predicateIn2.test(i,j))!=null ) list2.add(i);
         });
-        return new Tuple2<>(inList1,inList2);
+        return new Tuple2<>(list1,list2);
     }
 }
