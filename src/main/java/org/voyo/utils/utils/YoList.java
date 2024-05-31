@@ -123,6 +123,6 @@ public class YoList {
             if(YoList.<S>findFirst(dataList,j->predicateIn1.test(i,j))!=null) inList1.add(i);
             if(YoList.<S>findFirst(dataList,j->predicateIn2.test(i,j))!=null ) inList2.add(i);
         });
-        return new Tuple2(inList1,inList1);
+        return new Tuple2<>(inList1,inList2);
     }
 }
