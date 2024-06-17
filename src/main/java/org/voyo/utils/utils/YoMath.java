@@ -2,7 +2,8 @@ package org.voyo.utils.utils;
 
 public class YoMath {
   public static final String miniSource = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789";
-  public static final Long miniSourceLen = 62L;
+  public static final long miniSourceLen =62L;
+
 
   public YoMath() {
   }
@@ -41,13 +42,27 @@ public class YoMath {
 
   public static String miniLong(Long source) {
     StringBuilder stringBuilder = new StringBuilder();
-
     do {
-      Long y = source % miniSourceLen;
+      long y = source % miniSourceLen;
       source = source / miniSourceLen;
-      stringBuilder.append("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789".charAt(y.intValue()));
-    } while(source >= miniSourceLen);
+      stringBuilder.append(miniSource.charAt((int)y));
+    } while(source != 0);
 
     return stringBuilder.toString();
+  }
+
+  /**
+   * minLong 回转
+   * @param content
+   * @return
+   */
+  public static Long decodeMiniLong(String content){
+    int len=content.length();
+    long total=0;
+    for(int i=0;i<len;i++){
+      int indexValue = miniSource.indexOf(content.charAt(i));
+      total += (long)indexValue*(long)Math.pow(miniSourceLen,i);
+    }
+    return (long)total;
   }
 }

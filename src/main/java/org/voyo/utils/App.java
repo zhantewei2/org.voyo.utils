@@ -1,6 +1,10 @@
 package org.voyo.utils;
 
 
+import org.voyo.utils.utils.UniqueId;
+import org.voyo.utils.utils.YoMap;
+import org.voyo.utils.utils.YoMath;
+
 import java.util.regex.Pattern;
 
 public class App {
@@ -44,7 +48,12 @@ public class App {
     }
 
     public static <T> void main(String[] args) throws Exception{
-
+        String miniId=UniqueId.getMiniId();
+        System.out.println(miniId);
+        int count=100;
+        while(count-->0){
+            System.out.println(UniqueId.getMiniId());
+        }
     }
 
 
