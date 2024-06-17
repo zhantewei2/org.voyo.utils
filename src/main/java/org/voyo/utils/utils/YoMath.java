@@ -1,8 +1,11 @@
 package org.voyo.utils.utils;
 
 public class YoMath {
-  public static final String miniSource = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789";
-  public static final long miniSourceLen =62L;
+  /**
+   *  exclude a
+   */
+  public static final String miniSource = "qwertyuiopsdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789";
+  public static final long miniSourceLen =61L;
 
 
   public YoMath() {
