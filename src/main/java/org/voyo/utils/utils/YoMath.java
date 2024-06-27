@@ -4,12 +4,10 @@ public class YoMath {
   /**
    *  exclude a
    */
-  public static final String miniSource = "qwertyuiopsdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789";
-  public static final long miniSourceLen =61L;
+  public static final String miniSource = "qwertyuiopsdfghjklzxcvbnmQWERTYUIOPSDFGHJKLZXCVBNM0123456789";
+  public static final long miniSourceLen =60L;
 
-
-  public YoMath() {
-  }
+  public YoMath() {}
 
   public static String randomId(int count) {
     StringBuilder stringBuilder = new StringBuilder();
