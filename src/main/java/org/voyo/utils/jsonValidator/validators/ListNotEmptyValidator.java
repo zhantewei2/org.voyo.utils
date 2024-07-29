@@ -2,8 +2,8 @@ package org.voyo.utils.jsonValidator.validators;
 
 import org.voyo.utils.jsonValidator.ListNotEmpty;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.Collection;
 import java.util.List;
 

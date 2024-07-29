@@ -1,7 +1,5 @@
 package org.voyo.utils.utils;
 
-import org.springframework.util.StringUtils;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -16,26 +14,26 @@ public class YoDate {
   public static String BASE_TIME_FORMAT= "yyyy-MM-dd HH:mm:ss";
 
   public static Date parseDateStr(String str,String format) throws ParseException{
-    return parse(str,StringUtils.isEmpty(format)?BASE_DATE_FORMAT:format);
+    return parse(str,YoStr.isBlank(format)?BASE_DATE_FORMAT:format);
   }
   public static Date parseDateStr(String str)throws ParseException{
     return parse(str,BASE_DATE_FORMAT);
   }
   public static Date parseTimeStr(String str,String format) throws ParseException{
-    return parse(str,StringUtils.isEmpty(format)?BASE_TIME_FORMAT:format);
+    return parse(str,YoStr.isBlank(format)?BASE_TIME_FORMAT:format);
   }
   public static Date parseTimeStr(String str) throws ParseException{
     return parse(str,BASE_TIME_FORMAT);
   }
   public static String formatDate(Date date,String format){
-    return format(date,StringUtils.isEmpty(format)?BASE_DATE_FORMAT:format);
+    return format(date,YoStr.isBlank(format)?BASE_DATE_FORMAT:format);
   }
 
   public static String formatDate(Date date){
     return format(date,BASE_DATE_FORMAT);
   }
   public static String formatTime(Date date,String format){
-    return format(date,StringUtils.isEmpty(format)?BASE_TIME_FORMAT:format);
+    return format(date,YoStr.isBlank(format)?BASE_TIME_FORMAT:format);
   }
 
   public static String formatTime(Date date){

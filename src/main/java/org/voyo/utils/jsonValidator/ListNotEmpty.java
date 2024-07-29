@@ -2,8 +2,8 @@ package org.voyo.utils.jsonValidator;
 
 import org.voyo.utils.jsonValidator.validators.ListNotEmptyValidator;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Constraint(validatedBy = ListNotEmptyValidator.class)

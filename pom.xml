@@ -8,8 +8,10 @@
     <name>utils</name>
     <groupId>org.voyo</groupId>
     <description>des</description>
-    <version>2.3.5._28</version>
+    <version>3.3.2._28</version>
     <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.release.version>1.0.0</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -18,7 +20,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.3.5.RELEASE</version>
+                <version>3.3.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -34,7 +36,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
+            <version>1.18.32</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
