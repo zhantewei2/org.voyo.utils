@@ -10,10 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.voyo.utils.HttpException.ReqBad;
 import org.voyo.utils.HttpException.ReqBadEnum;
 import org.voyo.utils.HttpException.ReqBadProfile;
@@ -33,8 +35,11 @@ public class AdviceYoExceptHandler {
     if(e instanceof IOException && message.contains("Broken pipe")){
       log.warn("IOException:{}",message);
       return null;
+    } else if (e instanceof NoResourceFoundException){
+      return this.sendBody(HttpStatus.NOT_FOUND,new ReqBadProfile(ReqBadEnum.FindEmpty.getCode(),"No Resource",null));
+    } else if(e instanceof HttpRequestMethodNotSupportedException){
+      return this.sendBody(HttpStatus.NOT_ACCEPTABLE,new ReqBadProfile(ReqBadEnum.NotAccept.getCode(), e.getMessage(),null));
     }else {
-      e.printStackTrace();
       log.error("Catch error: ", e);
       return this.sendBody(HttpStatus.BAD_REQUEST, new ReqBadProfile(ReqBadEnum.Normal.getCode(), "系统服务错误", e.toString()));
     }

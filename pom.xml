@@ -8,7 +8,7 @@
     <name>utils</name>
     <groupId>org.voyo</groupId>
     <description>des</description>
-    <version>3.3.2._28</version>
+    <version>3.3.2._31</version>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>

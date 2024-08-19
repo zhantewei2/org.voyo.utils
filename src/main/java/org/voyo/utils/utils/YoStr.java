@@ -15,7 +15,7 @@ public class YoStr {
     public static boolean isBlank(String str){
         return str==null||"".equals(str);
     }
-
+    public static boolean isNotBlank(String str){return str!=null && !"".equals(str);}
     public static boolean isAnyBlank(String... items){
         if(items==null ) return true;
         for(String i:items){
