@@ -19,7 +19,7 @@ public class YoConcurrent {
         Iterator<T> iterator=list.stream().iterator();
         List<Thread> threads=new ArrayList<>();
         while(concurrentPoolSize-- >0){
-            Thread thread=new Thread(()->{
+            Thread thread=Thread.ofVirtual().start(()->{
                 T item=null;
                 while(true) {
                     synchronized (list) {

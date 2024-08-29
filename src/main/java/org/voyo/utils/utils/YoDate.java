@@ -47,6 +47,11 @@ public class YoDate {
     SimpleDateFormat simpleDateFormat=new SimpleDateFormat(format);
     return simpleDateFormat.format(date);
   }
+  public static String format(Long timestamp,String format){
+    Date d=new Date();
+    d.setTime(timestamp);
+    return format(d,format);
+  }
 
   //获取距当前时间最近的整点时间
   public static Calendar getClosestHourCalendar(){

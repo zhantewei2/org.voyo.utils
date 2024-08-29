@@ -16,4 +16,6 @@ public class PgParams {
   @NotNull
   @Min(1)
   private Integer pageNum;
+
+
 }

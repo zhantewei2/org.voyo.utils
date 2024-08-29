@@ -129,7 +129,6 @@ public class YoObject {
       return null;
     }
   }
-
   public static <T> T loadJson(String json, TypeReference<T> typeReference){
     if(json == null || "".equals(json))return null;
     try{
