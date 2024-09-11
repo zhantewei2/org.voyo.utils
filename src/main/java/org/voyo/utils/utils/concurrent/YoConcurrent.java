@@ -1,15 +1,17 @@
 package org.voyo.utils.utils.concurrent;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 
+@Slf4j
 public class YoConcurrent {
     /**
      * concurrent run task.
-     * 一次错误，会关闭一个线程。 出现concurrentPoolSize次错误后，所有线程均关闭
      * @param list
      * @param concurrentSize
      * @param consumer
@@ -29,7 +31,7 @@ public class YoConcurrent {
                     try {
                         consumer.accept(item);
                     }catch (Exception e){
-                        break;
+                        log.error("concurrent error:",e);
                     }
                 }
             });
