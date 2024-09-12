@@ -36,51 +36,9 @@ public class App {
   }
 
   public static <T> void main(String[] args) throws Exception {
-
-    int count=100000;
-    long startTime=System.currentTimeMillis();
-    ttReflect(count);
-//    ttInvoke(count);
-//    directInvoke(count);
-    System.out.println(String.format("duration time: %s",System.currentTimeMillis() - startTime));
+    AA aa=new AA();
+    System.out.println("app:"+App.class.getTypeName());
   }
 
-
-  public static void ttReflect(int count){
-    YoReflect<AA> yoReflect=new YoReflect<>(AA.class);
-    while(count-->0) {
-      AA aa = new AA();
-      aa.setAge(12);
-      aa.setName("name");
-      AA bb = new AA();
-      BeanUtils.copyProperties(aa, bb);
-//      yoReflect.copy(aa,bb);
-      bb.setAge(null);
-//      System.out.println("isSame:"+yoReflect.shouldNotUpdate(aa,bb));
-    }
-  }
-
-  public static void ttInvoke(int count){
-    while(count-->0){
-      AA aa = new AA();
-      aa.setAge(12);
-      aa.setName("name");
-      AA bb = new AA();
-      YoObject.assign(bb,aa);
-      System.out.println("bb, name:" + bb.getName() + ", age:" + bb.getAge().toString());
-    }
-  }
-
-  public static void directInvoke(int count){
-    while(count-->0){
-      AA aa = new AA();
-      aa.setAge(12);
-      aa.setName("name");
-      AA bb = new AA();
-      bb.setName(aa.getName());
-      bb.setAge(aa.getAge());
-      System.out.println("bb, name:" + bb.getName() + ", age:" + bb.getAge().toString());
-    }
-  }
 
 }
