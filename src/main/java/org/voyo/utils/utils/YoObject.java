@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.voyo.utils.jackson.YoJackson;
+import org.voyo.utils.utils.copy.YoCopyUtil;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -23,9 +24,6 @@ public class YoObject {
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
     objectMapper.registerModule(YoJackson.createModule());
   }
-
-
-
 
   public static <T> Boolean compareSameIncludeNull(T origin, T target) {
     MethodHandles.Lookup lookup= MethodHandles.lookup();
@@ -46,7 +44,6 @@ public class YoObject {
       } catch (NoSuchMethodException|IllegalAccessException e) {
         continue;
       }
-
       if (isEqualType(methodType.returnType())) {
         try {
           Object targetVal = methodHandle.invoke(target);
@@ -57,7 +54,6 @@ public class YoObject {
         }
       }
     }
-
     return true;
   }
 
@@ -143,31 +139,12 @@ public class YoObject {
     return prefix + key.substring(0, 1).toUpperCase() + key.substring(1);
   }
 
-  public static void assign(Object b, Object a) {
-    Class<?> aClass=a.getClass();
-    Class<?> bClass=b.getClass();
-    Field[] afs=aClass.getDeclaredFields();
-    Field[] bfs=bClass.getDeclaredFields();
-    String key;
-    String getKey;
-    String setKey;
-    Method getMethod;
-    Method setMethod;
-    for(Field field:afs){
-      key=field.getName();
-      getKey=resolveHumpKey("get",key);
-      setKey=resolveHumpKey("set",key);
-      try {
-        getMethod= aClass.getMethod(getKey);
-        setMethod= bClass.getMethod(setKey,field.getType());
-      }catch (Exception e){
-        continue;
-      }
-      try {
-        setMethod.invoke(b,getMethod.invoke(a));
-      }catch (Exception e){}
-    }
+  public static void assign(Object target, Object source) {
+    YoCopyUtil.copy(source,target);
+  }
 
+  public static <T,S> void copy(T source,S target){
+    YoCopyUtil.copy(source,target);
   }
 }
 

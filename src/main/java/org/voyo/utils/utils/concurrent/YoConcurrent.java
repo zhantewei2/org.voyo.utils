@@ -13,7 +13,7 @@ public class YoConcurrent {
     /**
      * concurrent run task.
      * @param list
-     * @param concurrentSize
+     * @param concurrentPoolSize
      * @param consumer
      * @param <T>
      */

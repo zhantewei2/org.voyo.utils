@@ -1,5 +1,8 @@
 package org.voyo.utils.utils;
 
+import org.voyo.utils.utils.copy.MethodCache;
+import org.voyo.utils.utils.copy.YoCopyUtil;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -10,29 +13,14 @@ import java.util.List;
 
 public class YoReflect<T> {
 
-  private class MethodCache{
-    private final MethodHandle getMethod;
-    private final MethodHandle setMethod;
 
-    public MethodCache(MethodHandle getMethod,MethodHandle setMethod){
-      this.getMethod=getMethod;
-      this.setMethod=setMethod;
-    }
-    public MethodHandle getGetMethod(){
-      return getMethod;
-    }
-    public MethodHandle getSetMethod(){
-      return setMethod;
-    }
-  }
-
-  private final HashMap<String,MethodCache> cache=new HashMap<>();
+  private final HashMap<String, MethodCache> cache=new HashMap<>();
   private final MethodHandles.Lookup lookup = MethodHandles.lookup();
 
   private MethodHandle getGetMethod(Class<T> type,Field f){
     String key=f.getName();
     try {
-      return lookup.findVirtual(type, "get"+key.substring(0, 1).toUpperCase() + key.substring(1), MethodType.methodType(f.getType()));
+      return lookup.findVirtual(type, YoCopyUtil.getGetKey(key), MethodType.methodType(f.getType()));
     }catch (NoSuchMethodException | IllegalAccessException e) {
       return null;
     }
@@ -42,7 +30,7 @@ public class YoReflect<T> {
     try {
       return lookup.findVirtual(
           type,
-          "set"+key.substring(0, 1).toUpperCase() + key.substring(1),
+          YoCopyUtil.getSetKey(key),
           MethodType.methodType(void.class,f.getType()));
     }catch (NoSuchMethodException | IllegalAccessException e) {
       return null;

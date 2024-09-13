@@ -49,12 +49,8 @@ public class YoFormUpload {
 
   }
 
-  /**
-   * 流示上传，可边下载边上传。
-   * @param params
-   * @return
-   * Example
-   *     YoFormUpload.FormUploadParams params=new YoFormUpload.FormUploadParams();
+   /* example:
+      *     YoFormUpload.FormUploadParams params=new YoFormUpload.FormUploadParams();
    *     params.setUrl("http://localhost:3000");
    *     params.setMethod("POST");
    *     params.setFormData(new HashMap<String,String>(){{
@@ -70,6 +66,11 @@ public class YoFormUpload {
    *     String resultContent=YoIO.readStreamAsStr(r.getData());
    *
    */
+  /**
+   * 流示上传，可边下载边上传。
+   * @param params
+   * @return http result
+  */
   @SneakyThrows
   public HttpResult streamUpload(FormUploadParams params){
     String url=params.getUrl();
