@@ -14,9 +14,9 @@
             <scope>runtime</scope>
             <useProjectArtifact>true</useProjectArtifact>
             <unpack>true</unpack>
-            <excludes>
-                <exclude>com.fasterxml.jackson.core:jackson-databind</exclude>
-            </excludes>
+<!--            <excludes>-->
+<!--                <exclude>com.fasterxml.jackson.core:jackson-databind</exclude>-->
+<!--            </excludes>-->
         </dependencySet>
     </dependencySets>
 </assembly>
