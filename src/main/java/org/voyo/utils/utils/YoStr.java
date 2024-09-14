@@ -1,7 +1,11 @@
 package org.voyo.utils.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class YoStr {
@@ -11,7 +15,7 @@ public class YoStr {
     public static boolean isBlank(String str){
         return str==null||"".equals(str);
     }
-
+    public static boolean isNotBlank(String str){return str!=null && !"".equals(str);}
     public static boolean isAnyBlank(String... items){
         if(items==null ) return true;
         for(String i:items){
@@ -30,8 +34,7 @@ public class YoStr {
             return str;
         } else {
             char[] chars;
-            for(chars = new char[padsCount]; padsCount-- > 0; chars[padsCount] = padChar) {
-            }
+            for(chars = new char[padsCount]; padsCount-- > 0; chars[padsCount] = padChar) {}
 
             return new String(chars) + str;
         }
@@ -68,5 +71,31 @@ public class YoStr {
         return a.length>0?
                 Arrays.stream(a).map(Long::valueOf).collect(Collectors.toList()):
                 null;
+    }
+
+    public static String replaceAll(String str,String regStr, Function<Matcher,String> fn){
+        Matcher m=Pattern.compile(regStr).matcher(str);
+        StringBuilder sb=new StringBuilder();
+        int startIndex=0;
+        int endIndex= str.length();
+        while(m.find()){
+            sb.append(str, startIndex, m.start());
+            sb.append(fn.apply(m));
+            startIndex= m.end();
+        }
+        if(startIndex<endIndex) sb.append(str, startIndex, endIndex);
+        return sb.toString();
+    }
+
+    public static String underlineKeyToHump(String key){
+        return replaceAll(key,"_(\\w)",m->{
+            return m.group(1).toUpperCase();
+        });
+    }
+
+    public static String humpKeyToUnderline(String key){
+        return replaceAll(key,"(?<!^)[A-Z]",m->{
+            return "_"+m.group().toLowerCase();
+        });
     }
 }

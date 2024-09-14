@@ -13,6 +13,9 @@ public class UniqueId {
   public static synchronized Long getUId() {
     return uniqueIdInstance.getUniqueId();
   }
+  public static synchronized String getMiniId(){
+    return YoMath.miniLong(getUId());
+  }
 
   private char getRandom() {
     return (char)YoMath.randomInt(48, 57);
@@ -37,6 +40,7 @@ public class UniqueId {
       ++this.index;
     }
 
-    return Long.valueOf(nowTime + YoStr.padsLeft(2, String.valueOf(this.index), '0') + this.getRandomStr(3));
+    return Long.valueOf(nowTime + YoStr.padsLeft(3, String.valueOf(this.index), '0') + this.getRandomStr(2));
   }
+
 }

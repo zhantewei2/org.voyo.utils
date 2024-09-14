@@ -1,10 +1,12 @@
 package org.voyo.utils.utils;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import org.voyo.utils.params.Tuple2;
+
+import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class YoList {
@@ -61,7 +63,70 @@ public class YoList {
         return null;
     }
 
-    public static <T> boolean isEmpty(List<T> list) {
+    public static <T> boolean isEmpty(Collection<T> list) {
         return list==null || list.isEmpty();
+    }
+
+    public static <T> void partitionRun(Collection<T> collection,int partitionSize,Consumer<List<T>> consumer){
+        List<T> partList=new ArrayList<>();
+        int index=0;
+        Iterator<T> iterator=collection.stream().iterator();
+        while(true){
+            index++;
+            if(iterator.hasNext()){
+                partList.add(iterator.next());
+                if(index>=partitionSize){
+                    consumer.accept(partList);
+                    partList.clear();
+                    index=0;
+                }
+            }else{
+                if(!partList.isEmpty()){
+                    consumer.accept(partList);
+                    partList.clear();
+                }
+                break;
+            }
+
+        }
+    }
+
+    public static <T,K,V> Map<K,V> toMap(Collection<T> list, Function<T,K> getKey, Function<T,V> getVal){
+        Map<K,V> m=new HashMap<>();
+        for(T i:list){
+            m.putIfAbsent(getKey.apply(i), getVal.apply(i));
+        }
+        return m;
+    }
+
+
+    public static <T,S> List<T> notIn(List<T> originList, List<S> dataList, BiPredicate<T,S> predicate){
+        return originList.stream().filter(i->{
+            return YoList.<S>findFirst(dataList,j->predicate.test(i,j)) == null;
+        }).collect(Collectors.toList());
+    }
+
+    public static <T,S> List<T> in(List<T> originList,List<S> dataList, BiPredicate<T,S> predicate){
+        return originList.stream().filter(i->{
+            return YoList.<S>findFirst(dataList,j->predicate.test(i,j))!= null;
+        }).collect(Collectors.toList());
+    }
+
+    public static <T,S> Tuple2<List<T>,List<T>> notInAndIn(
+        List<T> originList,
+        List<S> dataList,
+        Predicate<T> predicate1,
+        BiPredicate<T,S> predicateNotIn1,
+        BiPredicate<T,S> predicateIn2
+    ){
+        List<T> list1=new ArrayList<>();
+        List<T> list2=new ArrayList<>();
+        originList.forEach(i->{
+            if(predicate1.test(i)){
+                if(YoList.<S>findFirst(dataList,j->predicateNotIn1.test(i,j))==null) list1.add(i);
+            }
+            if(YoList.<S>findFirst(dataList,j->predicateIn2.test(i,j))!=null ) list2.add(i);
+        });
+        return new Tuple2<>(list1,list2);
     }
 }

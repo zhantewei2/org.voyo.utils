@@ -3,14 +3,21 @@ package org.voyo.utils.utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.SerializerFactory;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
+import org.voyo.utils.jackson.YoJackson;
+import org.voyo.utils.utils.copy.YoCopyUtil;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +26,8 @@ public class YoObject {
   public static ObjectMapper objectMapper=new ObjectMapper();
 
   static {
-
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+    objectMapper.registerModule(YoJackson.createModule());
   }
 
   public static <T> Boolean compareSameIncludeNull(T origin, T target) {
@@ -42,7 +49,6 @@ public class YoObject {
       } catch (NoSuchMethodException|IllegalAccessException e) {
         continue;
       }
-
       if (isEqualType(methodType.returnType())) {
         try {
           Object targetVal = methodHandle.invoke(target);
@@ -53,7 +59,6 @@ public class YoObject {
         }
       }
     }
-
     return true;
   }
 
@@ -140,31 +145,12 @@ public class YoObject {
     return prefix + key.substring(0, 1).toUpperCase() + key.substring(1);
   }
 
-  public static void assign(Object b, Object a) {
-    Class<?> aClass=a.getClass();
-    Class<?> bClass=b.getClass();
-    Field[] afs=aClass.getDeclaredFields();
-    Field[] bfs=bClass.getDeclaredFields();
-    String key;
-    String getKey;
-    String setKey;
-    Method getMethod;
-    Method setMethod;
-    for(Field field:afs){
-      key=field.getName();
-      getKey=resolveHumpKey("get",key);
-      setKey=resolveHumpKey("set",key);
-      try {
-        getMethod= aClass.getMethod(getKey);
-        setMethod= bClass.getMethod(setKey,field.getType());
-      }catch (Exception e){
-        continue;
-      }
-      try {
-        setMethod.invoke(b,getMethod.invoke(a));
-      }catch (Exception e){}
-    }
+  public static void assign(Object target, Object source) {
+    YoCopyUtil.copy(source,target);
+  }
 
+  public static <T,S> void copy(T source,S target){
+    YoCopyUtil.copy(source,target);
   }
 }
 

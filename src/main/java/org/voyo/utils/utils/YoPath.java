@@ -35,10 +35,11 @@ public class YoPath {
     String content=stringBuilder.toString();
     return content.substring(0,content.length()-1);
   }
-  public static String getSuffix(String fileName){
 
+  public static String getSuffix(String fileName){
     if(YoStr.isBlank(fileName))return "";
     int lastIndex=fileName.lastIndexOf(".");
-    return fileName.substring(lastIndex+1);
+    System.out.println(lastIndex);
+    return lastIndex<0?"":fileName.substring(lastIndex+1);
   }
 }

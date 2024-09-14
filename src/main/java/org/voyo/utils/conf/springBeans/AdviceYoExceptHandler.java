@@ -1,6 +1,8 @@
 package org.voyo.utils.conf.springBeans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -8,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.voyo.utils.HttpException.ReqBad;
 import org.voyo.utils.HttpException.ReqBadEnum;
 import org.voyo.utils.HttpException.ReqBadProfile;
+
 
 @ControllerAdvice
 public class AdviceYoExceptHandler {
@@ -27,9 +31,17 @@ public class AdviceYoExceptHandler {
 
   @ExceptionHandler({Exception.class})
   public ResponseEntity<String> handleGlobalException(Exception e, HttpServletResponse res) {
-    e.printStackTrace();
-    log.error("Catch error: ", e);
-    return this.sendBody(HttpStatus.BAD_REQUEST, new ReqBadProfile(ReqBadEnum.Normal.getCode(), "系统服务错误", e.toString()));
+    String message=e.getMessage();
+    if(e instanceof IOException && message.contains("Broken pipe")){
+      log.warn("IOException:{}",message);
+      return null;
+    } else if(e instanceof HttpRequestMethodNotSupportedException) {
+      return this.sendBody(HttpStatus.NOT_ACCEPTABLE, new ReqBadProfile(ReqBadEnum.NotAccept.getCode(), e.getMessage(), null));
+    }else {
+      e.printStackTrace();
+      log.error("Catch error: ", e);
+      return this.sendBody(HttpStatus.BAD_REQUEST, new ReqBadProfile(ReqBadEnum.Normal.getCode(), "系统服务错误", e.toString()));
+    }
   }
 
   @ExceptionHandler({MethodArgumentNotValidException.class, MissingServletRequestParameterException.class})
