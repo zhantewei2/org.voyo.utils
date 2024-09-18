@@ -1,5 +1,6 @@
 package org.voyo.utils.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.voyo.utils.utils.copy.MethodCache;
 import org.voyo.utils.utils.copy.YoCopyUtil;
 
@@ -11,9 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 public class YoReflect<T> {
-
-
   private final HashMap<String, MethodCache> cache=new HashMap<>();
   private final MethodHandles.Lookup lookup = MethodHandles.lookup();
 
@@ -53,7 +53,21 @@ public class YoReflect<T> {
   public YoReflect(Class<T> type){
     cacheKeys(type);
   }
+  public <S> S invokeGet(T target,String key){
+    try {
+      return (S)cache.get(key).getGetMethod().invoke(target);
+    }catch (Throwable e){
+      return null;
+    }
+  }
 
+  public <S> void invokeSet(T target,String key,S v){
+    try{
+      cache.get(key).getSetMethod().invoke(target,v);
+    }catch (Throwable e){
+
+    }
+  }
   public void copy(T source, T target, List<String> excludeKeys){
     for(String key:cache.keySet()){
       if(excludeKeys.contains(key)) continue;
@@ -124,5 +138,19 @@ public class YoReflect<T> {
   }
   public boolean isSame(T oldObj,T newObj){
     return isSame(oldObj,newObj,new ArrayList<>());
+  }
+
+  public List<Object> getAll(T obj,String[] keys){
+    List<Object> result=new ArrayList<>(keys.length);
+    MethodHandle m=null;
+    for(int i=0,len=keys.length;i<len;i++){
+      m=cache.get(keys[i]).getGetMethod();
+      try {
+        result.add(m.invoke(obj));
+      }catch (Throwable e){
+        result.add(null);
+      }
+    }
+    return result;
   }
 }

@@ -13,6 +13,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -138,7 +139,18 @@ public class YoObject {
   public static String resolveHumpKey(String prefix, String key) {
     return prefix + key.substring(0, 1).toUpperCase() + key.substring(1);
   }
-
+  public static boolean isAnyEmpty(List<Object> list){
+    for(Object i:list){
+      if(i==null)return true;
+    }
+    return false;
+  }
+  public static boolean isAllEmpty(List<Object> list){
+    for(Object i:list){
+      if(i!=null)return false;
+    }
+    return true;
+  }
   public static void assign(Object target, Object source) {
     YoCopyUtil.copy(source,target);
   }
