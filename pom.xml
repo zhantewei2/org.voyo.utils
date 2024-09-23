@@ -7,8 +7,8 @@
     <artifactId>utils</artifactId>
     <name>utils</name>
     <groupId>io.github.zhantewei2</groupId>
-    <description>des</description>
-    <version>3.3.2._38</version>
+    <description>voyo utils for springBoot project</description>
+    <version>3.3.2._39</version>
     <url>https://github.com/zhantewei2/org.voyo.utils</url>
 
     <properties>

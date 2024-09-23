@@ -63,7 +63,7 @@ public class YoList {
         return null;
     }
 
-    public static <T> boolean isEmpty(List<T> list) {
+    public static <T> boolean isEmpty(Collection<T> list) {
         return list==null || list.isEmpty();
     }
 
