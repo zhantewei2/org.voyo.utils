@@ -3,6 +3,12 @@ package org.voyo.utils;
 
 import org.voyo.utils.utils.YoReflect;
 import lombok.extern.slf4j.Slf4j;
+import org.voyo.utils.utils.url.UrlNode;
+import org.voyo.utils.utils.url.YoUrl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 public class App {
@@ -27,7 +33,7 @@ public class App {
   }
 
   public static <T> void main(String[] args) throws Exception {
-    AA aa=new AA();
+
   }
 
 

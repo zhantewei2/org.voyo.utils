@@ -2,6 +2,7 @@ package org.voyo.utils.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.voyo.utils.jackson.YoJackson;
@@ -130,6 +131,15 @@ public class YoObject {
     if(json == null || "".equals(json))return null;
     try{
       return objectMapper.readValue(json,typeReference);
+    }catch (Exception e){
+      log.warn("fail loadJson",e);
+      return null;
+    }
+  }
+
+  public static <T> T loadJson(String json, JavaType javaType){
+    try{
+      return objectMapper.readValue(json,javaType);
     }catch (Exception e){
       log.warn("fail loadJson",e);
       return null;
