@@ -35,8 +35,6 @@ public class YoConcurrent {
                     }
                 }
             });
-            thread.setDaemon(true);
-            thread.start();
             threads.add(thread);
         }
 
