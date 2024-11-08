@@ -20,7 +20,6 @@ import java.util.Map;
 @Slf4j
 public class YoObject {
   public static ObjectMapper objectMapper=new ObjectMapper();
-
   static {
 
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);

@@ -15,6 +15,7 @@ public class TrimFieldDeserializer extends JsonDeserializer<String> implements C
     @Override
     public String deserialize(JsonParser parser, DeserializationContext ctx){
         try {
+            System.out.println(12);
             String val = parser.getText();
             return val.trim();
         }catch (IOException e){
@@ -23,6 +24,7 @@ public class TrimFieldDeserializer extends JsonDeserializer<String> implements C
     }
 
     public JsonDeserializer<?> createContextual(DeserializationContext provider, BeanProperty bean) throws JsonMappingException {
+        System.out.println("4");
         return this;
     }
 }
